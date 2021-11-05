@@ -76,7 +76,7 @@ namespace WebApi.Controllers
         }
 
         /// <summary>
-        ///     1.3.3 - Добавление нового человека
+        ///     1.3.3 - Удаление человека
         /// </summary>
         [HttpDelete("{id}")]
         public IActionResult DeleteHuman([FromRoute] int id)

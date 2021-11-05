@@ -1,8 +1,10 @@
 using System.Collections.Generic;
 using System.Linq;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.ModelBinding;
 using WebApi.Db;
 using WebApi.Models.Dto;
+using WebApi.ViewModels;
 
 namespace WebApi.Controllers
 {
@@ -49,6 +51,28 @@ namespace WebApi.Controllers
                     h.Surname.Contains(q) ||
                     (h.Patronymic ?? "").Contains(q)
                 ).ToArray();
+        }
+
+        /// <summary>
+        ///     1.3.2 - Добавление нового человека
+        /// </summary>
+        [HttpPost("humans")]
+        public HumanDto AddHuman(AddHumanViewModel model)
+        {
+            var id = Database.Humans.Count + 1;
+
+            var human = new HumanDto
+            {
+                Id = id,
+                Name = model.Name,
+                Surname = model.Surname,
+                Patronymic = model.Patronymic,
+                Birthday = model.Birthday,
+            };
+
+            Database.Humans.Add(human);
+
+            return human;
         }
     }
 }

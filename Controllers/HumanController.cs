@@ -34,5 +34,21 @@ namespace WebApi.Controllers
                     select h
                 ).Distinct();
         }
+
+        /// <summary>
+        ///     1.3.3 - Поиск людей по фамилии/имени/отчеству
+        /// </summary>
+        [HttpGet("humans/{query}")]
+        public IEnumerable<HumanDto> GetHumans([FromRoute] string query)
+        {
+            var q = query.Trim();
+
+            return Database.Humans
+                .FindAll(h =>
+                    h.Name.Contains(q) ||
+                    h.Surname.Contains(q) ||
+                    (h.Patronymic ?? "").Contains(q)
+                ).ToArray();
+        }
     }
 }

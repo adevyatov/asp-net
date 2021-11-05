@@ -1,7 +1,6 @@
 using System.Collections.Generic;
 using System.Linq;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.ModelBinding;
 using WebApi.Db;
 using WebApi.Models.Dto;
 using WebApi.ViewModels;
@@ -12,7 +11,7 @@ namespace WebApi.Controllers
     ///     1.3 - Контроллер отвечающий за человека
     /// </summary>
     [ApiController]
-    public class HumanController
+    public class HumanController : Controller
     {
         /// <summary>
         ///     1.3.1.1 - Список всех людей
@@ -73,6 +72,24 @@ namespace WebApi.Controllers
             Database.Humans.Add(human);
 
             return human;
+        }
+
+        /// <summary>
+        ///     1.3.3 - Добавление нового человека
+        /// </summary>
+        [HttpDelete("humans/{id}")]
+        public IActionResult DeleteHuman([FromRoute] int id)
+        {
+            var human = Database.Humans.FirstOrDefault(h => h.Id == id);
+            if (human == null)
+            {
+                return this.NotFound();
+            }
+
+            // remove author's books
+            Database.Books.RemoveAll(b => b.Author == id);
+
+            return this.Ok();
         }
     }
 }

@@ -82,10 +82,7 @@ namespace WebApi.Controllers
         public IActionResult DeleteHuman([FromRoute] int id)
         {
             var human = Database.Humans.FirstOrDefault(h => h.Id == id);
-            if (human == null)
-            {
-                return NotFound();
-            }
+            if (human == null) return NotFound();
 
             // remove human
             Database.Humans.Remove(human);

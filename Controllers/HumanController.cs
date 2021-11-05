@@ -13,7 +13,7 @@ namespace WebApi.Controllers
     public class HumanController
     {
         /// <summary>
-        ///     1.3.1 - Список всех людей
+        ///     1.3.1.1 - Список всех людей
         /// </summary>
         [HttpGet("humans")]
         public IEnumerable<HumanDto> GetHumans()
@@ -22,7 +22,7 @@ namespace WebApi.Controllers
         }
 
         /// <summary>
-        ///     1.3.2 - Список людей, являющихся писателями
+        ///     1.3.1.2 - Список людей, являющихся писателями
         /// </summary>
         [HttpGet("humans/writers")]
         public IEnumerable<HumanDto> GetWriters()
@@ -36,7 +36,7 @@ namespace WebApi.Controllers
         }
 
         /// <summary>
-        ///     1.3.3 - Поиск людей по фамилии/имени/отчеству
+        ///     1.3.1.3 - Поиск людей по фамилии/имени/отчеству
         /// </summary>
         [HttpGet("humans/{query}")]
         public IEnumerable<HumanDto> GetHumans([FromRoute] string query)

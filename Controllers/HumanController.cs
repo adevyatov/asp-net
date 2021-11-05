@@ -11,12 +11,13 @@ namespace WebApi.Controllers
     ///     1.3 - Контроллер отвечающий за человека
     /// </summary>
     [ApiController]
+    [Route("humans")]
     public class HumanController : Controller
     {
         /// <summary>
         ///     1.3.1.1 - Список всех людей
         /// </summary>
-        [HttpGet("humans")]
+        [HttpGet]
         public IEnumerable<HumanDto> GetHumans()
         {
             return Database.Humans.ToArray();
@@ -25,7 +26,7 @@ namespace WebApi.Controllers
         /// <summary>
         ///     1.3.1.2 - Список людей, являющихся писателями
         /// </summary>
-        [HttpGet("humans/writers")]
+        [HttpGet("writers")]
         public IEnumerable<HumanDto> GetWriters()
         {
             return
@@ -39,7 +40,7 @@ namespace WebApi.Controllers
         /// <summary>
         ///     1.3.1.3 - Поиск людей по фамилии/имени/отчеству
         /// </summary>
-        [HttpGet("humans/{query}")]
+        [HttpGet("{query}")]
         public IEnumerable<HumanDto> GetHumans([FromRoute] string query)
         {
             var q = query.Trim();
@@ -55,7 +56,7 @@ namespace WebApi.Controllers
         /// <summary>
         ///     1.3.2 - Добавление нового человека
         /// </summary>
-        [HttpPost("humans")]
+        [HttpPost]
         public HumanDto AddHuman(AddHumanViewModel model)
         {
             var id = Database.Humans.Count + 1;
@@ -77,19 +78,22 @@ namespace WebApi.Controllers
         /// <summary>
         ///     1.3.3 - Добавление нового человека
         /// </summary>
-        [HttpDelete("humans/{id}")]
+        [HttpDelete("{id}")]
         public IActionResult DeleteHuman([FromRoute] int id)
         {
             var human = Database.Humans.FirstOrDefault(h => h.Id == id);
             if (human == null)
             {
-                return this.NotFound();
+                return NotFound();
             }
 
-            // remove author's books
+            // remove human
+            Database.Humans.Remove(human);
+
+            // remove human's books
             Database.Books.RemoveAll(b => b.Author == id);
 
-            return this.Ok();
+            return Ok();
         }
     }
 }

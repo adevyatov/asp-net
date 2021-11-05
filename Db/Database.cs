@@ -13,6 +13,7 @@ namespace WebApi.Db
         {
             new HumanDto
             {
+                Id = 1,
                 Surname = "Максвелл Демпси",
                 Name = "Генри",
                 PenName = "Гарри Гаррисон",
@@ -20,6 +21,7 @@ namespace WebApi.Db
             },
             new HumanDto
             {
+                Id = 2,
                 Surname = "Перумов",
                 Name = "Николай",
                 Patronymic = "Даниилович",
@@ -28,6 +30,7 @@ namespace WebApi.Db
             },
             new HumanDto
             {
+                Id = 3,
                 Surname = "Лукьяненко",
                 Name = "Сергей",
                 Patronymic = "Васильевич",
@@ -35,6 +38,7 @@ namespace WebApi.Db
             },
             new HumanDto
             {
+                Id = 4,
                 Surname = "Иванов",
                 Name = "Иван",
                 Patronymic = "Иванович",
@@ -46,26 +50,30 @@ namespace WebApi.Db
         {
             new BookDto
             {
+                Id = 1,
                 Title = "Крыса из нержавеющей стали",
-                Author = "Гарри Гаррисон",
+                Author = 1,
                 Genre = "Фантастика",
             },
             new BookDto
             {
+                Id = 2,
                 Title = "Неукротимая планета",
-                Author = "Гарри Гаррисон",
+                Author = 1,
                 Genre = "Фантастика",
             },
             new BookDto
             {
+                Id = 3,
                 Title = "Черновик",
-                Author = "Сергей Лукьяненко",
+                Author = 3,
                 Genre = "Фантастика",
             },
             new BookDto
             {
+                Id = 4,
                 Title = "Алмазный меч, Деревянный меч",
-                Author = "Ник Перумов",
+                Author = 2,
                 Genre = "Фэнтези",
             },
         };

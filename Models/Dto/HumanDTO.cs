@@ -15,8 +15,6 @@ namespace WebApi.Models.Dto
 
         public string? Patronymic { get; set; }
 
-        public string PenName { get; set; } = null!;
-
         public DateTime Birthday { get; set; }
     }
 }

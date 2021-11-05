@@ -16,7 +16,6 @@ namespace WebApi.Db
                 Id = 1,
                 Surname = "Максвелл Демпси",
                 Name = "Генри",
-                PenName = "Гарри Гаррисон",
                 Birthday = DateTime.Parse("1925-03-12"),
             },
             new HumanDto
@@ -25,7 +24,6 @@ namespace WebApi.Db
                 Surname = "Перумов",
                 Name = "Николай",
                 Patronymic = "Даниилович",
-                PenName = "Ник Перумов",
                 Birthday = DateTime.Parse("1963-11-21"),
             },
             new HumanDto

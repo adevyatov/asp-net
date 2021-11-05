@@ -9,13 +9,13 @@ namespace WebApi.Models.Dto
     {
         public int Id { get; set; }
 
-        public string Name { get; set; }
+        public string Name { get; set; } = null!;
 
-        public string Surname { get; set; }
+        public string Surname { get; set; } = null!;
 
-        public string Patronymic { get; set; }
+        public string? Patronymic { get; set; }
 
-        public string PenName { get; set; }
+        public string PenName { get; set; } = null!;
 
         public DateTime Birthday { get; set; }
     }

@@ -7,10 +7,10 @@ namespace WebApi.Models.Dto
     {
         public int Id { get; set; }
 
-        public string Title { get; set; }
+        public string Title { get; set; } = null!;
 
         public int Author { get; set; }
 
-        public string Genre { get; set; }
+        public string Genre { get; set; } = null!;
     }
 }

@@ -32,7 +32,7 @@ namespace WebApi.Controllers
             return
             (
                 from h in Database.Humans
-                join b in Database.Books on h.Id equals b.Author
+                join b in Database.Books on h.Id equals b.AuthorId
                 select h
             ).Distinct();
         }
@@ -88,7 +88,7 @@ namespace WebApi.Controllers
             Database.Humans.Remove(human);
 
             // remove human's books
-            Database.Books.RemoveAll(b => b.Author == id);
+            Database.Books.RemoveAll(b => b.AuthorId == id);
 
             return Ok();
         }

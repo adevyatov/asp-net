@@ -50,28 +50,28 @@ namespace WebApi.Db
             {
                 Id = 1,
                 Title = "Крыса из нержавеющей стали",
-                Author = 1,
+                AuthorId = 1,
                 Genre = "Фантастика",
             },
             new BookDto
             {
                 Id = 2,
                 Title = "Неукротимая планета",
-                Author = 1,
+                AuthorId = 1,
                 Genre = "Фантастика",
             },
             new BookDto
             {
                 Id = 3,
                 Title = "Черновик",
-                Author = 3,
+                AuthorId = 3,
                 Genre = "Фантастика",
             },
             new BookDto
             {
                 Id = 4,
                 Title = "Алмазный меч, Деревянный меч",
-                Author = 2,
+                AuthorId = 2,
                 Genre = "Фэнтези",
             },
         };

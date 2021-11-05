@@ -25,7 +25,7 @@ namespace WebApi.Controllers
         [HttpGet("{authorId}")]
         public IEnumerable<BookDto> GetBooks([FromRoute] int authorId)
         {
-            return Database.Books.Where(b => b.Author == authorId).ToArray();
+            return Database.Books.Where(b => b.AuthorId == authorId).ToArray();
         }
 
         /// <summary>
@@ -40,7 +40,7 @@ namespace WebApi.Controllers
             {
                 Id = id,
                 Title = model.Title,
-                Author = model.Author,
+                AuthorId = model.AuthorId,
                 Genre = model.Genre,
             };
 

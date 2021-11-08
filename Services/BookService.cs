@@ -52,5 +52,15 @@ namespace WebApi.Services
 
             return true;
         }
+
+        public bool DeleteByAuthorId(int authorId)
+        {
+            foreach (var book in _repository.GetByAuthorId(authorId))
+            {
+                _repository.Remove(book);
+            }
+
+            return true;
+        }
     }
 }

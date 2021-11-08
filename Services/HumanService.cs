@@ -8,12 +8,12 @@ namespace WebApi.Services
     public class HumanService : IHumanService
     {
         private readonly IHumanRepository _humanRepository;
-        private readonly IBookRepository _bookRepository;
+        private readonly IBookService _bookService;
 
-        public HumanService(IHumanRepository humanRepository, IBookRepository bookRepository)
+        public HumanService(IHumanRepository humanRepository, IBookService bookService)
         {
             _humanRepository = humanRepository;
-            _bookRepository = bookRepository;
+            _bookService = bookService;
         }
 
         public IEnumerable<HumanDto> GetHumans()
@@ -54,10 +54,7 @@ namespace WebApi.Services
             _humanRepository.Remove(human);
 
             // remove human's books
-            foreach (var book in _bookRepository.GetByAuthorId(human.Id))
-            {
-                _bookRepository.Remove(book);
-            }
+            _bookService.DeleteByAuthorId(human.Id);
 
             return true;
         }

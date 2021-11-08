@@ -10,5 +10,7 @@ namespace WebApi.Services
         public IEnumerable<BookDto> GetBooks(int authorId);
         public BookDto Add(AddBookViewModel model);
         public bool Delete(int id);
+
+        public bool DeleteByAuthorId(int authorId);
     }
 }

@@ -7,28 +7,28 @@ namespace WebApi.Services
 {
     public class HumanService
     {
-        private readonly IHumanRepository _humanRepo;
-        private readonly IBookRepository _bookRepo;
+        private readonly IHumanRepository _humanRepository;
+        private readonly IBookRepository _bookRepository;
 
-        public HumanService(IHumanRepository humanRepo, IBookRepository bookRepo)
+        public HumanService(IHumanRepository humanRepository, IBookRepository bookRepository)
         {
-            _humanRepo = humanRepo;
-            _bookRepo = bookRepo;
+            _humanRepository = humanRepository;
+            _bookRepository = bookRepository;
         }
 
         public IEnumerable<HumanDto> GetHumans()
         {
-            return _humanRepo.GetAll();
+            return _humanRepository.GetAll();
         }
 
         public IEnumerable<HumanDto> GetWriters()
         {
-            return _humanRepo.GetWriters();
+            return _humanRepository.GetWriters();
         }
 
         public IEnumerable<HumanDto> GetHumans(string query)
         {
-            return _humanRepo.GetByQuery(query.Trim());
+            return _humanRepository.GetByQuery(query.Trim());
         }
 
         public HumanDto Add(AddHumanViewModel model)
@@ -41,22 +41,22 @@ namespace WebApi.Services
                 Birthday = model.Birthday,
             };
 
-            return _humanRepo.Add(human);
+            return _humanRepository.Add(human);
         }
 
         public bool Delete(int id)
         {
-            var human = _humanRepo.GetById(id);
+            var human = _humanRepository.GetById(id);
 
             if (human == null) return false;
 
             // remove human
-            _humanRepo.Remove(human);
+            _humanRepository.Remove(human);
 
             // remove human's books
-            foreach (var book in _bookRepo.GetByAuthorId(human.Id))
+            foreach (var book in _bookRepository.GetByAuthorId(human.Id))
             {
-                _bookRepo.Remove(book);
+                _bookRepository.Remove(book);
             }
 
             return true;

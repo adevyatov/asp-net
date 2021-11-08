@@ -1,8 +1,7 @@
 using System.Collections.Generic;
-using System.Linq;
 using Microsoft.AspNetCore.Mvc;
-using WebApi.Db;
 using WebApi.Models.Dto;
+using WebApi.Services;
 using WebApi.ViewModels;
 
 namespace WebApi.Controllers
@@ -10,22 +9,29 @@ namespace WebApi.Controllers
     [Route("books")]
     public class BookController : Controller
     {
+        private readonly BookService _bookService;
+
+        public BookController(BookService bookService)
+        {
+            _bookService = bookService;
+        }
+
         /// <summary>
         ///     1.4.1.1 - Список книг
         /// </summary>
         [HttpGet]
         public IEnumerable<BookDto> GetBooks()
         {
-            return Database.Books.ToArray();
+            return _bookService.GetBooks();
         }
 
         /// <summary>
         ///     1.4.1.2 - Добавление новой книги
         /// </summary>
-        [HttpGet("{authorId}")]
+        [HttpGet("{authorId:int}")]
         public IEnumerable<BookDto> GetBooks([FromRoute] int authorId)
         {
-            return Database.Books.Where(b => b.AuthorId == authorId).ToArray();
+            return _bookService.GetBooks(authorId);
         }
 
         /// <summary>
@@ -34,34 +40,16 @@ namespace WebApi.Controllers
         [HttpPost]
         public BookDto AddBook(AddBookViewModel model)
         {
-            var id = Database.Books.Count + 1;
-
-            var book = new BookDto
-            {
-                Id = id,
-                Title = model.Title,
-                AuthorId = model.AuthorId,
-                Genre = model.Genre,
-            };
-
-            Database.Books.Add(book);
-
-            return book;
+            return _bookService.Add(model);
         }
 
         /// <summary>
         ///     1.4.3 - Удаление книги
         /// </summary>
-        [HttpDelete("{id}")]
+        [HttpDelete("{id:int}")]
         public IActionResult DeleteBook([FromRoute] int id)
         {
-            var book = Database.Books.FirstOrDefault(b => b.Id == id);
-            if (book == null) return NotFound();
-
-            // remove book
-            Database.Books.Remove(book);
-
-            return Ok();
+            return _bookService.Delete(id) ? Ok() : NotFound();
         }
     }
 }

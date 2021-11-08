@@ -8,6 +8,8 @@ namespace WebApi.Repositories
 {
     public class HumanRepository : IHumanRepository
     {
+        private readonly IBookRepository _bookRepository;
+
         private static List<HumanDto> Humans { get; } = new()
         {
             new HumanDto
@@ -45,6 +47,11 @@ namespace WebApi.Repositories
 
         private static int LastId { get; set; } = Humans.Count;
 
+        public HumanRepository(IBookRepository bookRepository)
+        {
+            _bookRepository = bookRepository;
+        }
+
         public HumanDto? GetById(int id)
         {
             return Humans.FirstOrDefault(h => h.Id == id);
@@ -69,7 +76,7 @@ namespace WebApi.Repositories
             return
             (
                 from h in Humans
-                join b in Database.Books on h.Id equals b.AuthorId
+                join b in _bookRepository.GetAll() on h.Id equals b.AuthorId
                 select h
             ).Distinct();
         }

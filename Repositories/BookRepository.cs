@@ -6,7 +6,7 @@ namespace WebApi.Repositories
 {
     public class BookRepository : IBookRepository
     {
-        private static List<BookDto> Books { get; set; } = new()
+        private static List<BookDto> Books { get; } = new()
         {
             new BookDto
             {

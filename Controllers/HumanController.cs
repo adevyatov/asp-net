@@ -1,7 +1,6 @@
 using System.Collections.Generic;
-using System.Linq;
+using DefaultNamespace;
 using Microsoft.AspNetCore.Mvc;
-using WebApi.Db;
 using WebApi.Models.Dto;
 using WebApi.ViewModels;
 
@@ -14,13 +13,20 @@ namespace WebApi.Controllers
     [Route("humans")]
     public class HumanController : Controller
     {
+        private readonly HumanService _humanService;
+
+        public HumanController(HumanService humanService)
+        {
+            _humanService = humanService;
+        }
+
         /// <summary>
         ///     1.3.1.1 - Список всех людей
         /// </summary>
         [HttpGet]
         public IEnumerable<HumanDto> GetHumans()
         {
-            return Database.Humans.ToArray();
+            return _humanService.GetHumans();
         }
 
         /// <summary>
@@ -29,12 +35,7 @@ namespace WebApi.Controllers
         [HttpGet("writers")]
         public IEnumerable<HumanDto> GetWriters()
         {
-            return
-            (
-                from h in Database.Humans
-                join b in Database.Books on h.Id equals b.AuthorId
-                select h
-            ).Distinct();
+            return _humanService.GetWriters();
         }
 
         /// <summary>
@@ -43,14 +44,7 @@ namespace WebApi.Controllers
         [HttpGet("{query}")]
         public IEnumerable<HumanDto> GetHumans([FromRoute] string query)
         {
-            var q = query.Trim();
-
-            return Database.Humans
-                .FindAll(h =>
-                    h.Name.Contains(q) ||
-                    h.Surname.Contains(q) ||
-                    (h.Patronymic ?? "").Contains(q)
-                ).ToArray();
+            return _humanService.GetHumans(query.Trim());
         }
 
         /// <summary>
@@ -59,36 +53,18 @@ namespace WebApi.Controllers
         [HttpPost]
         public HumanDto AddHuman(AddHumanViewModel model)
         {
-            var id = Database.Humans.Count + 1;
-
-            var human = new HumanDto
-            {
-                Id = id,
-                Name = model.Name,
-                Surname = model.Surname,
-                Patronymic = model.Patronymic,
-                Birthday = model.Birthday,
-            };
-
-            Database.Humans.Add(human);
-
-            return human;
+            return _humanService.Add(model);
         }
 
         /// <summary>
         ///     1.3.3 - Удаление человека
         /// </summary>
-        [HttpDelete("{id}")]
+        [HttpDelete("{id:int}")]
         public IActionResult DeleteHuman([FromRoute] int id)
         {
-            var human = Database.Humans.FirstOrDefault(h => h.Id == id);
-            if (human == null) return NotFound();
+            var result = _humanService.Delete(id);
 
-            // remove human
-            Database.Humans.Remove(human);
-
-            // remove human's books
-            Database.Books.RemoveAll(b => b.AuthorId == id);
+            if (!result) return NotFound();
 
             return Ok();
         }

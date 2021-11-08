@@ -9,41 +9,6 @@ namespace WebApi.Db
     /// </summary>
     public static class Database
     {
-        public static List<HumanDto> Humans { get; set; } = new()
-        {
-            new HumanDto
-            {
-                Id = 1,
-                Surname = "Максвелл Демпси",
-                Name = "Генри",
-                Birthday = DateTime.Parse("1925-03-12"),
-            },
-            new HumanDto
-            {
-                Id = 2,
-                Surname = "Перумов",
-                Name = "Николай",
-                Patronymic = "Даниилович",
-                Birthday = DateTime.Parse("1963-11-21"),
-            },
-            new HumanDto
-            {
-                Id = 3,
-                Surname = "Лукьяненко",
-                Name = "Сергей",
-                Patronymic = "Васильевич",
-                Birthday = DateTime.Parse("1968-04-11"),
-            },
-            new HumanDto
-            {
-                Id = 4,
-                Surname = "Иванов",
-                Name = "Иван",
-                Patronymic = "Иванович",
-                Birthday = DateTime.Parse("1975-07-30"),
-            },
-        };
-
         public static List<BookDto> Books { get; set; } = new()
         {
             new BookDto

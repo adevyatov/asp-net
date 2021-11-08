@@ -5,7 +5,7 @@ using WebApi.ViewModels;
 
 namespace WebApi.Services
 {
-    public class BookService
+    public class BookService : IBookService
     {
         private readonly IBookRepository _repository;
 

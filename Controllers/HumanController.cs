@@ -13,9 +13,9 @@ namespace WebApi.Controllers
     [Route("humans")]
     public class HumanController : Controller
     {
-        private readonly HumanService _humanService;
+        private readonly IHumanService _humanService;
 
-        public HumanController(HumanService humanService)
+        public HumanController(IHumanService humanService)
         {
             _humanService = humanService;
         }

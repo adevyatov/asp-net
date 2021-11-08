@@ -5,7 +5,7 @@ using WebApi.ViewModels;
 
 namespace WebApi.Services
 {
-    public class HumanService
+    public class HumanService : IHumanService
     {
         private readonly IHumanRepository _humanRepository;
         private readonly IBookRepository _bookRepository;

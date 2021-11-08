@@ -9,9 +9,9 @@ namespace WebApi.Controllers
     [Route("books")]
     public class BookController : Controller
     {
-        private readonly BookService _bookService;
+        private readonly IBookService _bookService;
 
-        public BookController(BookService bookService)
+        public BookController(IBookService bookService)
         {
             _bookService = bookService;
         }

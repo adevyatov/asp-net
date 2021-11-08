@@ -1,7 +1,6 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using WebApi.Db;
 using WebApi.Models.Dto;
 
 namespace WebApi.Repositories

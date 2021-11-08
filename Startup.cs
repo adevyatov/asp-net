@@ -26,6 +26,7 @@ namespace WebApi
             services.AddTransient<IHumanRepository, HumanRepository>();
             services.AddTransient<IBookRepository, BookRepository>();
             services.AddTransient<HumanService>();
+            services.AddTransient<BookService>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

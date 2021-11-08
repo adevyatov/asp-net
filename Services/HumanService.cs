@@ -1,10 +1,9 @@
-using System;
 using System.Collections.Generic;
 using WebApi.Models.Dto;
 using WebApi.Repositories;
 using WebApi.ViewModels;
 
-namespace DefaultNamespace
+namespace WebApi.Services
 {
     public class HumanService
     {

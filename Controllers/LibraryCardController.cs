@@ -1,6 +1,7 @@
 using Microsoft.AspNetCore.Mvc;
 using WebApi.Models;
 using WebApi.Services;
+using WebApi.ViewModels;
 
 namespace WebApi.Controllers
 {
@@ -22,9 +23,9 @@ namespace WebApi.Controllers
         ///     2.1.4 - Метод POST отвечающий за взятие книги читателем
         /// </summary>
         [HttpPost]
-        public LibraryCard TakeBook([FromQuery] int humanId, [FromQuery] int bookId)
+        public LibraryCard TakeBook(AddLibraryCardViewModel model)
         {
-            return _cardService.TakeBook(humanId, bookId);
+            return _cardService.TakeBook(model.HumanId, model.BookId);
         }
     }
 }

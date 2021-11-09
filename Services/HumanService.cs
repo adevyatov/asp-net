@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using WebApi.Exceptions;
 using WebApi.Models.Dto;
 using WebApi.Repositories;
 using WebApi.ViewModels;
@@ -14,6 +15,11 @@ namespace WebApi.Services
         {
             _humanRepository = humanRepository;
             _bookService = bookService;
+        }
+
+        public HumanDto GetHuman(int id)
+        {
+            return _humanRepository.GetById(id) ?? throw new HttpNotFoundException("Human not found");
         }
 
         public IEnumerable<HumanDto> GetHumans()
@@ -46,7 +52,7 @@ namespace WebApi.Services
 
         public bool Delete(int id)
         {
-            var human = _humanRepository.GetById(id);
+            var human = GetHuman(id);
 
             if (human == null) return false;
 

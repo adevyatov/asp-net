@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using WebApi.Exceptions;
 using WebApi.Models.Dto;
 using WebApi.Repositories;
 using WebApi.ViewModels;
@@ -13,7 +14,12 @@ namespace WebApi.Services
         {
             _repository = repository;
         }
-        
+
+        public BookDto GetBook(int bookId)
+        {
+            return _repository.GetById(bookId) ?? throw new HttpNotFoundException("Book not found");
+        }
+
         public IEnumerable<BookDto> GetBooks()
         {
             return _repository.GetAll();

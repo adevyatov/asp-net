@@ -6,6 +6,7 @@ namespace WebApi.Services
 {
     public interface IBookService
     {
+        public BookDto GetBook(int bookId);
         public IEnumerable<BookDto> GetBooks();
         public IEnumerable<BookDto> GetBooks(int authorId);
         public BookDto Add(AddBookViewModel model);

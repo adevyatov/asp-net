@@ -28,6 +28,7 @@ namespace WebApi
             services.AddTransient<ILibraryCardRepository, LibraryCardRepository>();
             services.AddTransient<IHumanService, HumanService>();
             services.AddTransient<IBookService, BookService>();
+            services.AddTransient<ILibraryCardService, LibraryCardService>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

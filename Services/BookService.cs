@@ -8,45 +8,49 @@ namespace WebApi.Services
 {
     public class BookService : IBookService
     {
-        private readonly IBookRepository _repository;
+        private readonly IBookRepository _bookRepository;
+        private readonly IHumanRepository _humanRepository;
 
-        public BookService(IBookRepository repository)
+        public BookService(IBookRepository bookRepository, IHumanRepository humanRepository)
         {
-            _repository = repository;
+            _bookRepository = bookRepository;
+            _humanRepository = humanRepository;
         }
 
         public BookDto GetBook(int bookId)
         {
-            return _repository.GetById(bookId) ?? throw new HttpNotFoundException("Book not found");
+            return _bookRepository.GetById(bookId) ?? throw new HttpNotFoundException("Book not found");
         }
 
         public IEnumerable<BookDto> GetBooks()
         {
-            return _repository.GetAll();
+            return _bookRepository.GetAll();
         }
 
         public IEnumerable<BookDto> GetBooks(int authorId)
         {
-            return _repository.GetByAuthorId(authorId);
+            return _bookRepository.GetByAuthorId(authorId);
         }
 
         public BookDto Add(AddBookViewModel model)
         {
+            var human = _humanRepository.GetById(model.AuthorId) ?? throw new HttpNotFoundException("Author not found");
+
             var book = new BookDto
             {
                 Title = model.Title,
-                AuthorId = model.AuthorId,
+                AuthorId = human.Id,
                 Genre = model.Genre,
             };
 
-            _repository.Add(book);
+            _bookRepository.Add(book);
 
             return book;
         }
 
         public bool Delete(int id)
         {
-            var book = _repository.GetById(id);
+            var book = _bookRepository.GetById(id);
 
             if (book == null)
             {
@@ -54,16 +58,16 @@ namespace WebApi.Services
             }
 
             // remove book
-            _repository.Remove(book);
+            _bookRepository.Remove(book);
 
             return true;
         }
 
         public bool DeleteByAuthorId(int authorId)
         {
-            foreach (var book in _repository.GetByAuthorId(authorId))
+            foreach (var book in _bookRepository.GetByAuthorId(authorId))
             {
-                _repository.Remove(book);
+                _bookRepository.Remove(book);
             }
 
             return true;

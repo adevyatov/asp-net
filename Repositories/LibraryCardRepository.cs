@@ -11,5 +11,10 @@ namespace WebApi.Repositories
         private static List<LibraryCard> LibraryCards { get; } = new();
 
         private static int LastId { get; set; } = 0;
+
+        public void Add(LibraryCard card)
+        {
+            LibraryCards.Add(card);
+        }
     }
 }

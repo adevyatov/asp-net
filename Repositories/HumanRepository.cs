@@ -9,6 +9,9 @@ namespace WebApi.Repositories
     {
         private readonly IBookRepository _bookRepository;
 
+        /// <summary>
+        ///     1.2.2.3 - Статичный список книг
+        /// </summary>
         private static List<HumanDto> Humans { get; } = new()
         {
             new HumanDto

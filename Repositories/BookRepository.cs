@@ -6,6 +6,9 @@ namespace WebApi.Repositories
 {
     public class BookRepository : IBookRepository
     {
+        /// <summary>
+        ///     1.2.2.3 - Статичный список людей
+        /// </summary>
         private static List<BookDto> Books { get; } = new()
         {
             new BookDto

@@ -38,7 +38,7 @@ namespace WebApi.Controllers
         ///     1.4.2 - Добавление новой книги
         /// </summary>
         [HttpPost]
-        public BookDto AddBook(AddBookViewModel model)
+        public BookDto AddBook([FromBody] AddBookViewModel model)
         {
             return _bookService.Add(model);
         }

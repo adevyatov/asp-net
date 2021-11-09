@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using Microsoft.AspNetCore.Mvc;
+using WebApi.Arguments;
 using WebApi.Models.Dto;
 using WebApi.Services;
 using WebApi.ViewModels;
@@ -18,15 +19,16 @@ namespace WebApi.Controllers
 
         /// <summary>
         ///     1.4.1.1 - Список книг
+        ///     2.2.2 - Возможность сделать запрос с сортировкой по автору, имени книги и жанру
         /// </summary>
         [HttpGet]
-        public IEnumerable<BookDto> GetBooks()
+        public IEnumerable<BookDto> GetBooks([FromQuery] BookListSort sortBy)
         {
-            return _bookService.GetBooks();
+            return _bookService.GetBooks(sortBy);
         }
 
         /// <summary>
-        ///     1.4.1.2 - Добавление новой книги
+        ///     1.4.1.2 - Список всех книг по автору (фильтрация AuthorId).
         /// </summary>
         [HttpGet("{authorId:int}")]
         public IEnumerable<BookDto> GetBooks([FromRoute] int authorId)

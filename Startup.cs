@@ -5,6 +5,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using Microsoft.Extensions.Logging;
 using Microsoft.OpenApi.Models;
 using WebApi.Exceptions;
 using WebApi.Middleware;
@@ -36,7 +37,7 @@ namespace WebApi
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-        public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
+        public void Configure(IApplicationBuilder app, IWebHostEnvironment env, ILogger<Startup> logger)
         {
             if (env.IsDevelopment())
             {
@@ -65,6 +66,7 @@ namespace WebApi
 
             app.UseAuthorization();
 
+            app.UseMiddleware<RequestExecutionMiddleware>();
             app.UseMiddleware<BasicAuthMiddleware>();
 
             app.UseEndpoints(endpoints => { endpoints.MapControllers(); });

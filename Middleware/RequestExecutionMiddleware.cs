@@ -4,6 +4,9 @@ using Microsoft.Extensions.Logging;
 
 namespace WebApi.Middleware
 {
+    /// <summary>
+    ///     2.2.3 - Middleware, который логирует время выполнения запроса
+    /// </summary>
     public class RequestExecutionMiddleware
     {
         private readonly RequestDelegate _next;

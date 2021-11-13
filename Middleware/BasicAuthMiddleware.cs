@@ -36,7 +36,11 @@ namespace WebApi.Middleware
                 if (value == null || credentials == null || credentials.Length < 2)
                 {
                     throw new HttpStatusException(HttpStatusCode.BadRequest, "Cannot parse authorization header");
+                }
 
+                if (value.Scheme != "Bearer")
+                {
+                    throw new HttpStatusException(HttpStatusCode.BadRequest, "Only Bearer authorization scheme is supported");
                 }
 
                 var username = credentials[0] ?? "";

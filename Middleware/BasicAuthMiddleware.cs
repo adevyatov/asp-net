@@ -1,6 +1,8 @@
 using System;
 using System.Linq;
 using System.Net;
+using System.Net.Http.Headers;
+using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
 using WebApi.Exceptions;
@@ -28,21 +30,28 @@ namespace WebApi.Middleware
                 throw new HttpStatusException(HttpStatusCode.Unauthorized, "You should pass Authorization header");
             }
 
-            var credentials = authorization.ToString().Split(':');
-
             try
             {
+                var value = AuthenticationHeaderValue.Parse(authorization.ToString());
+                var credentials = value.Parameter?.Split(':') ?? Array.Empty<object>();
+
+                if (value == null || credentials == null || credentials.Length < 2)
+                {
+                    throw new HttpStatusException(HttpStatusCode.BadRequest, "Cannot parse authorization header");
+
+                }
+
                 var username = credentials[0] ?? "";
                 var password = credentials[1] ?? "";
 
-                if (username != "admin" || password != "admin")
+                if ((string)username != "admin" || (string)password != "admin")
                 {
                     throw new HttpStatusException(HttpStatusCode.BadRequest, "Invalid authorization login or password");
                 }
             }
-            catch (Exception)
+            catch (FormatException e)
             {
-                throw new HttpStatusException(HttpStatusCode.BadRequest, "Cannot parse authorization header");
+                throw new HttpStatusException(HttpStatusCode.BadRequest, "Authorization header should has a value");
             }
 
             await _next.Invoke(context);

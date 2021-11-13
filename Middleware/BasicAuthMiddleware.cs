@@ -1,8 +1,6 @@
 using System;
-using System.Linq;
 using System.Net;
 using System.Net.Http.Headers;
-using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
 using WebApi.Exceptions;
@@ -49,7 +47,7 @@ namespace WebApi.Middleware
                     throw new HttpStatusException(HttpStatusCode.BadRequest, "Invalid authorization login or password");
                 }
             }
-            catch (FormatException e)
+            catch (FormatException)
             {
                 throw new HttpStatusException(HttpStatusCode.BadRequest, "Authorization header should has a value");
             }

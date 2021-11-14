@@ -30,10 +30,12 @@ GROUP BY g.genre_name
 ORDER BY "Количество книг" DESC;
 
 -- 3.4. Вывод статистики Авторов - количество книг по жанрам
-SELECT CONCAT_WS(' ', a.last_name, a.middle_name, a.first_name) AS Автор, g.genre_name AS Жанр, COALESCE(COUNT(bg.book_id), 0) AS "Количество книг"
-    FROM author AS a
-    LEFT JOIN book b ON a.id = b.author_id
-    LEFT JOIN book_genre bg ON b.id = bg.book_id
-    LEFT JOIN genre g ON g.id = bg.genre_id
+SELECT CONCAT_WS(' ', a.last_name, a.middle_name, a.first_name) AS Автор,
+       g.genre_name                                             AS Жанр,
+       COALESCE(COUNT(bg.book_id), 0)                           AS "Количество книг"
+FROM author AS a
+         LEFT JOIN book b ON a.id = b.author_id
+         LEFT JOIN book_genre bg ON b.id = bg.book_id
+         LEFT JOIN genre g ON g.id = bg.genre_id
 GROUP BY a.last_name, a.middle_name, a.first_name, g.genre_name
 ORDER BY "Количество книг" DESC;

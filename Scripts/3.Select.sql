@@ -1,29 +1,30 @@
--- 3.1: Получить список всех взятых пользователем книг в качестве параметра поиска - ID пользователя. Полное дерево: Книги - автор - жанр (через запятую)
-SELECT 
-       b.name as Книга, 
-       concat_ws(' ', a.last_name, a.middle_name, a.first_name) as Автор,
-       string_agg(g.genre_name, ', ') as Жанр
-FROM person as p
-    LEFT JOIN library_card lc on p.id = lc.person_id
-    JOIN book b on b.id = lc.book_id
-    JOIN author a on b.author_id = a.id
-    LEFT JOIN book_genre bg on b.id = bg.book_id
-    JOIN genre g on g.id = bg.genre_id
+-- 3. sql скрипты с запросами
+-- 3.1. Получить список всех взятых пользователем книг в качестве параметра поиска - ID пользователя. Полное дерево: Книги - автор - жанр (через запятую)
+SELECT b.name                                                   AS Книга,
+       CONCAT_WS(' ', a.last_name, a.middle_name, a.first_name) AS Автор,
+       STRING_AGG(g.genre_name, ', ')                           AS Жанр
+FROM person AS p
+         LEFT JOIN library_card lc ON p.id = lc.person_id
+         JOIN book b ON b.id = lc.book_id
+         JOIN author a ON b.author_id = a.id
+         LEFT JOIN book_genre bg ON b.id = bg.book_id
+         JOIN genre g ON g.id = bg.genre_id
 WHERE p.id = :person_id
-group by b.name, a.last_name, a.middle_name, a.first_name;
+GROUP BY b.name, a.last_name, a.middle_name, a.first_name;
 
 -- 3.2: Получить список книг автора (книг может и не быть). автор + книги + жанры  (через запятую)
-SELECT
-    concat_ws(' ', a.last_name, a.middle_name, a.first_name) as Автор,
-    b.name as Книга,
-    string_agg(g.genre_name, ', ') as Жанр
-FROM author as a
-         LEFT JOIN book b on a.id = b.author_id
-         LEFT JOIN book_genre bg on b.id = bg.book_id
-         JOIN genre g on g.id = bg.genre_id
-group by a.last_name, a.middle_name, a.first_name, b.name;
+SELECT CONCAT_WS(' ', a.last_name, a.middle_name, a.first_name) AS Автор,
+       b.name                                                   AS Книга,
+       STRING_AGG(g.genre_name, ', ')                           AS Жанр
+FROM author AS a
+         LEFT JOIN book b ON a.id = b.author_id
+         LEFT JOIN book_genre bg ON b.id = bg.book_id
+         JOIN genre g ON g.id = bg.genre_id
+GROUP BY a.last_name, a.middle_name, a.first_name, b.name;
 
-SELECT g.genre_name as Жанр, coalesce(sum(bg.book_id), 0) AS "Количество книг" FROM genre as g
-    LEFT JOIN book_genre bg on g.id = bg.genre_id
-group by g.genre_name ORDER BY "Количество книг" desc;
+SELECT g.genre_name AS Жанр, COALESCE(SUM(bg.book_id), 0) AS "Количество книг"
+FROM genre AS g
+         LEFT JOIN book_genre bg ON g.id = bg.genre_id
+GROUP BY g.genre_name
+ORDER BY "Количество книг" DESC;
     

@@ -22,7 +22,8 @@ FROM author AS a
          JOIN genre g ON g.id = bg.genre_id
 GROUP BY a.last_name, a.middle_name, a.first_name, b.name;
 
-SELECT g.genre_name AS Жанр, COALESCE(SUM(bg.book_id), 0) AS "Количество книг"
+-- 3.3 Вывод статистики Жанр - количество книг
+SELECT g.genre_name AS Жанр, COALESCE(COUNT(bg.book_id), 0) AS "Количество книг"
 FROM genre AS g
          LEFT JOIN book_genre bg ON g.id = bg.genre_id
 GROUP BY g.genre_name

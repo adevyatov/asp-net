@@ -1,6 +1,8 @@
 using System;
+using System.Buffers.Text;
 using System.Net;
 using System.Net.Http.Headers;
+using System.Security.Cryptography;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
 using WebApi.Exceptions;
@@ -31,22 +33,16 @@ namespace WebApi.Middleware
             try
             {
                 var value = AuthenticationHeaderValue.Parse(authorization.ToString());
-                var credentials = value.Parameter?.Split(':') ?? Array.Empty<object>();
 
-                if (value == null || credentials == null || credentials.Length < 2)
+                if (value.Scheme != "Basic")
                 {
-                    throw new HttpStatusException(HttpStatusCode.BadRequest, "Cannot parse authorization header");
+                    throw new HttpStatusException(HttpStatusCode.BadRequest, "Only Basic authorization scheme is supported");
                 }
 
-                if (value.Scheme != "Bearer")
-                {
-                    throw new HttpStatusException(HttpStatusCode.BadRequest, "Only Bearer authorization scheme is supported");
-                }
+                var expectedAuth = Convert.ToBase64String(System.Text.Encoding.UTF8.GetBytes("admin:admin"));
+                var actualAuth = value.Parameter;
 
-                var username = credentials[0] ?? "";
-                var password = credentials[1] ?? "";
-
-                if ((string)username != "admin" || (string)password != "admin")
+                if (expectedAuth != actualAuth)
                 {
                     throw new HttpStatusException(HttpStatusCode.BadRequest, "Invalid authorization login or password");
                 }

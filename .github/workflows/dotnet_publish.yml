@@ -1,0 +1,12 @@
+name: .NET Publish
+
+on: 
+  release:
+    types: [published, created, edited]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Publish
+        uses: EasyDesk/action-dotnet-publish@v1.0.0

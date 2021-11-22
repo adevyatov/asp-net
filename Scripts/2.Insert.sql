@@ -29,7 +29,7 @@ VALUES (1, 'Война и мир'),
        (4, 'Кладбище домашних животных')
 ;
 
-INSERT INTO book_genre (book_id, genre_id)
+INSERT INTO book_genre ("BooksId", "GenresId")
 VALUES (1, 2),
        (2, 2),
        (3, 2),

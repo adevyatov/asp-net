@@ -33,7 +33,7 @@ namespace WebApi
             services.AddSwaggerGen(c => { c.SwaggerDoc("v1", new OpenApiInfo {Title = "WebApi", Version = "v1"}); });
 
             // #2 - 2.4 - Получать строку подключения к базе данных из файла конфигурации
-            services.AddDbContext<ApiContext>(options =>
+            services.AddDbContext<AppContext>(options =>
                 options.UseNpgsql(Configuration["Db:AppContext:ConnectionString"])
             );
 

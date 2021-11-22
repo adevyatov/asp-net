@@ -2,9 +2,9 @@ using Microsoft.EntityFrameworkCore;
 
 namespace WebApi.Models.Context
 {
-    public class ApiContext : DbContext
+    public class AppContext : DbContext
     {
-        public ApiContext(DbContextOptions options) : base(options)
+        public AppContext(DbContextOptions options) : base(options)
         {
         }
 

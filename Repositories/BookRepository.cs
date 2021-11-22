@@ -1,64 +1,53 @@
+using System;
 using System.Collections.Generic;
 using System.Linq;
-using WebApi.Models.Dto;
+using System.Threading.Tasks;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Internal;
+using WebApi.Models;
+using WebApi.Models.Context;
+using AppContext = WebApi.Models.Context.AppContext;
 
 namespace WebApi.Repositories
 {
     public class BookRepository : IBookRepository
     {
+        private readonly AppContext _context;
+
+        public BookRepository(AppContext context)
+        {
+            _context = context;
+        }
+
         /// <summary>
         ///     1.2.2.3 - Статичный список людей
         /// </summary>
-        private static List<BookDto> Books { get; } = new()
+        private static List<Book> Books { get; } = new()
         {
-            new BookDto
-            {
-                Id = 1,
-                Title = "Крыса из нержавеющей стали",
-                AuthorId = 1,
-                Genre = "Фантастика",
-            },
-            new BookDto
-            {
-                Id = 2,
-                Title = "Неукротимая планета",
-                AuthorId = 1,
-                Genre = "Фантастика",
-            },
-            new BookDto
-            {
-                Id = 3,
-                Title = "Черновик",
-                AuthorId = 3,
-                Genre = "Фантастика",
-            },
-            new BookDto
-            {
-                Id = 4,
-                Title = "Алмазный меч, Деревянный меч",
-                AuthorId = 2,
-                Genre = "Фэнтези",
-            },
         };
 
         private static int LastId { get; set; } = Books.Count;
 
-        public IEnumerable<BookDto> GetAll()
+        public async Task<IEnumerable<Book>> GetAll()
         {
-            return Books.ToArray();
+            return await _context.Books
+                .Include(b => b.Author)
+                .Include(b => b.Genres)
+                .ToListAsync();
         }
 
-        public BookDto? GetById(int id)
+        public Book? GetById(int id)
         {
             return Books.FirstOrDefault(h => h.Id == id);
         }
 
-        public IEnumerable<BookDto> GetByAuthorId(int authorId)
+        public IEnumerable<Book> GetByAuthorId(int authorId)
         {
-            return Books.Where(b => b.AuthorId == authorId).ToArray();
+            throw new Exception("Not implemented");
+            // return Books.Where(b => b.AuthorId == authorId).ToArray();
         }
 
-        public BookDto Add(BookDto book)
+        public Book Add(Book book)
         {
             book.Id = ++LastId;
             Books.Add(book);
@@ -66,7 +55,7 @@ namespace WebApi.Repositories
             return book;
         }
 
-        public void Remove(BookDto book)
+        public void Remove(Book book)
         {
             Books.Remove(book);
         }

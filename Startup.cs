@@ -37,10 +37,10 @@ namespace WebApi
                 options.UseNpgsql(Configuration["Db:AppContext:ConnectionString"])
             );
 
-            services.AddTransient<IHumanRepository, HumanRepository>();
+            services.AddTransient<IPersonRepository, PersonRepository>();
             services.AddTransient<IBookRepository, BookRepository>();
             services.AddTransient<ILibraryCardRepository, LibraryCardRepository>();
-            services.AddTransient<IHumanService, HumanService>();
+            services.AddTransient<IPersonService, PersonService>();
             services.AddTransient<IBookService, BookService>();
             services.AddTransient<ILibraryCardService, LibraryCardService>();
             services.AddAutoMapper(Assembly.GetExecutingAssembly());

@@ -1,18 +1,19 @@
 using System.Collections.Generic;
-using WebApi.Models.Dto;
+using System.Threading.Tasks;
+using WebApi.Models;
 
 namespace WebApi.Repositories
 {
     public interface IBookRepository
     {
-        public IEnumerable<BookDto> GetAll();
+        public Task<IEnumerable<Book>> GetAll();
 
-        public BookDto? GetById(int id);
+        public Book? GetById(int id);
 
-        public IEnumerable<BookDto> GetByAuthorId(int authorId);
+        public IEnumerable<Book> GetByAuthorId(int authorId);
 
-        public BookDto Add(BookDto book);
+        public Book Add(Book book);
 
-        public void Remove(BookDto book);
+        public void Remove(Book book);
     }
 }

@@ -15,6 +15,7 @@ namespace WebApi.Models.Context
         public virtual DbSet<Person> People { get; set; } = null!;
 
         /// <summary>
+        ///     #2 - 2.1 - Подключить при помощи ef базу данных к проекту
         ///     #2 - 2.3 - Реализовать все связи между таблицами
         /// </summary>
         protected override void OnModelCreating(ModelBuilder modelBuilder)
@@ -79,7 +80,8 @@ namespace WebApi.Models.Context
 
             modelBuilder.Entity<LibraryCard>(entity =>
             {
-                entity.HasKey(e => new { e.BookId, e.PersonId }).HasName("book_person_pk");
+                entity.HasKey(e => e.Id).HasName("library_card_pk");
+                entity.Property(e => e.Id).ValueGeneratedOnAdd();
 
                 entity.ToTable("library_card");
 

@@ -5,7 +5,7 @@ namespace WebApi.Models.Dto
     /// <summary>
     ///     1.2.1 - Класс человека
     /// </summary>
-    public class HumanDto
+    public class PersonDto
     {
         public int Id { get; set; }
 

@@ -1,3 +1,5 @@
+using System.Collections.Generic;
+
 namespace WebApi.Models.Dto
 {
     /// <summary>
@@ -9,8 +11,8 @@ namespace WebApi.Models.Dto
 
         public string Title { get; set; } = null!;
 
-        public int AuthorId { get; set; }
+        public AuthorDto Author { get; set; } = null!;
 
-        public string Genre { get; set; } = null!;
+        public IEnumerable<GenreDto> Genres { get; set; } = null!;
     }
 }

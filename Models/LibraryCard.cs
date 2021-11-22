@@ -1,27 +1,28 @@
 using System;
-using WebApi.Models.Dto;
 
 namespace WebApi.Models
 {
     /// <summary>
-    ///     2.1.1 - Класс LibraryCard
+    ///     #1 - 2.1.1 - Класс LibraryCard
+    ///     #2 - 2.2 - Модель для таблицы library_card
     /// </summary>
     public class LibraryCard
     {
-        public LibraryCard(HumanDto human, BookDto book)
-        {
-            Id = Guid.NewGuid();
-            HumanId = human.Id;
-            BookId = book.Id;
-            Date = DateTimeOffset.Now;
-        }
+        // public LibraryCard(HumanDto human, BookDto book)
+        // {
+        //     HumanId = human.Id;
+        //     BookId = book.Id;
+        //     Date = DateTimeOffset.Now;
+        // }
 
-        public Guid Id { get; }
+        public int Id { get; set; }
 
-        public int HumanId { get; }
-
+        public Book Book { get; } = null!;
         public int BookId { get; }
 
-        public DateTimeOffset Date { get; }
+        public Person Person { get; } = null!;
+        public int PersonId { get; }
+
+        public DateTime Date { get; }
     }
 }

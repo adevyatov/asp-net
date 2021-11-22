@@ -22,8 +22,10 @@ CREATE TABLE genre
 
 CREATE TABLE book_genre
 (
-    book_id  INT NOT NULL REFERENCES book (id) ON DELETE CASCADE,
-    genre_id INT NOT NULL REFERENCES genre (id) ON DELETE CASCADE
+    -- PascalCase для маппинга entity, т.к. в ef core 5 нельзя указать название полей для связи в many-to-many.
+    BooksId  INT NOT NULL REFERENCES book (id) ON DELETE CASCADE,
+    GenresId INT NOT NULL REFERENCES genre (id) ON DELETE CASCADE,
+    CONSTRAINT book_genre_pk PRIMARY KEY (BooksId, GenresId)
 );
 
 CREATE TABLE person
@@ -38,5 +40,6 @@ CREATE TABLE person
 CREATE TABLE library_card
 (
     book_id   INT NOT NULL REFERENCES book (id) ON DELETE CASCADE,
-    person_id INT NOT NULL REFERENCES person (id) ON DELETE CASCADE
+    person_id INT NOT NULL REFERENCES person (id) ON DELETE CASCADE,
+    CONSTRAINT book_person_pk PRIMARY KEY (book_id, person_id)
 );

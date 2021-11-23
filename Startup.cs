@@ -77,7 +77,7 @@ namespace WebApi
             app.UseAuthorization();
 
             app.UseMiddleware<RequestExecutionMiddleware>();
-            app.UseMiddleware<BasicAuthMiddleware>();
+            // app.UseMiddleware<BasicAuthMiddleware>();
 
             app.UseEndpoints(endpoints => { endpoints.MapControllers(); });
         }

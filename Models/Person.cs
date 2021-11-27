@@ -4,15 +4,14 @@ using System.Collections.Generic;
 namespace WebApi.Models
 {
     /// <summary>
-    /// #2 - 2.2 - Модель для таблицы person
+    /// #2. 2.2 - Модель для таблицы person
     /// </summary>
     public class Person
     {
         public int Id { get; set; }
 
-        public string Name { get; set; } = null!;
-
         public string Surname { get; set; } = null!;
+        public string Name { get; set; } = null!;
 
         public string? Patronymic { get; set; }
 

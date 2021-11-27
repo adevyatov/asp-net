@@ -1,4 +1,5 @@
 using System.Reflection;
+using System.Text.Json.Serialization;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Diagnostics;
 using Microsoft.AspNetCore.Hosting;
@@ -31,8 +32,13 @@ namespace WebApi
         {
             services.AddControllers();
             services.AddSwaggerGen(c => { c.SwaggerDoc("v1", new OpenApiInfo {Title = "WebApi", Version = "v1"}); });
+            services.AddMvc()
+                .AddJsonOptions(options =>
+                {
+                    options.JsonSerializerOptions.DefaultIgnoreCondition = JsonIgnoreCondition.WhenWritingNull;
+                });
 
-            // #2 - 2.4 - Получать строку подключения к базе данных из файла конфигурации
+            // #2. 2.4 - Получать строку подключения к базе данных из файла конфигурации
             services.AddDbContext<AppContext>(options =>
                 options.UseNpgsql(Configuration["Db:AppContext:ConnectionString"])
             );

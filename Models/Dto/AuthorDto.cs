@@ -12,6 +12,6 @@ namespace WebApi.Models.Dto
 
         public string? MiddleName { get; set; }
 
-        public IEnumerable<BookDto> Books { get; set; } = null!;
+        // public IEnumerable<BookDto> Books { get; set; } = null!;
     }
 }

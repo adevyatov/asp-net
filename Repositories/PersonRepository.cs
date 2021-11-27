@@ -1,69 +1,82 @@
-using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
+using Microsoft.EntityFrameworkCore;
 using WebApi.Models;
+using AppContext = WebApi.Models.Context.AppContext;
 
 namespace WebApi.Repositories
 {
     public class PersonRepository : IPersonRepository
     {
-        private readonly IBookRepository _bookRepository;
+        private readonly AppContext _context;
 
-        /// <summary>
-        ///     1.2.2.3 - Статичный список книг
-        /// </summary>
-        private static List<Person> Humans { get; } = new()
+        public PersonRepository(AppContext context)
         {
-        };
-
-        private static int LastId { get; set; } = Humans.Count;
-
-        public PersonRepository(IBookRepository bookRepository)
-        {
-            _bookRepository = bookRepository;
+            _context = context;
         }
 
         public Person? GetById(int id)
         {
-            return Humans.FirstOrDefault(h => h.Id == id);
+            return _context.Persons.FirstOrDefault(h => h.Id == id);
         }
 
-        public IEnumerable<Person> GetAll()
+        public Task<List<Person>> GetAll()
         {
-            return Humans.ToArray();
+            return _context.Persons.ToListAsync();
         }
 
-        public IEnumerable<Person> GetByQuery(string query)
+        public Task<List<Person>> GetByQuery(string query)
         {
-            return Humans.FindAll(h =>
+            return _context.Persons.Where(h =>
                 h.Name.Contains(query) ||
                 h.Surname.Contains(query) ||
                 (h.Patronymic ?? "").Contains(query)
-            ).ToArray();
+            ).ToListAsync();
         }
 
-        public IEnumerable<Person> GetWriters()
+        public async Task<List<Person>> GetByFullname(string fullName)
         {
-            throw new Exception("Not implemented");
-            // return
-            // (
-            //     from h in Humans
-            //     join b in _bookRepository.GetAll() on h.Id equals b.AuthorId
-            //     select h
-            // ).Distinct();
+            var parts = fullName.Split(" ");
+            var surName = parts.ElementAtOrDefault(0);
+            var name = parts.ElementAtOrDefault(1);
+            var patronymic = parts.ElementAtOrDefault(2);
+
+            return await _context.Persons.Where(p =>
+                p.Surname == surName &&
+                p.Name == name &&
+                p.Patronymic == patronymic
+            ).ToListAsync();
         }
 
-        public Person Add(Person person)
+        public void Create(Person person)
         {
-            person.Id = ++LastId;
-            Humans.Add(person);
-
-            return person;
+            _context.Persons.Add(person);
+            _context.SaveChanges();
         }
 
-        public void Remove(Person person)
+        public void Update(Person person)
         {
-            Humans.Remove(person);
+            _context.SaveChanges();
+        }
+
+        public void Delete(Person person)
+        {
+            _context.Persons.Remove(person);
+            _context.SaveChanges();
+        }
+
+        public bool Exist(int id)
+        {
+            return _context.Persons.Any(e => e.Id == id);
+        }
+
+        public Task<Person> GetPersonWithLibraryCardsAndBooks(int personId)
+        {
+            return _context.Persons
+                .Include(p => p.LibraryCards)
+                .ThenInclude(lc => lc.Book)
+                .FirstOrDefaultAsync(p => p.Id == personId);
         }
     }
 }

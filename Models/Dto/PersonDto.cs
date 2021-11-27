@@ -1,4 +1,7 @@
 using System;
+using System.Collections.Generic;
+using System.Text.Json.Serialization;
+using WebApi.Behaviour.Serialization;
 
 namespace WebApi.Models.Dto
 {
@@ -15,6 +18,9 @@ namespace WebApi.Models.Dto
 
         public string? Patronymic { get; set; }
 
+        [JsonConverter(typeof(DateConverter))]
         public DateTime Birthday { get; set; }
+
+        public IEnumerable<LibraryCardDto> LibraryCards { get; set; } = null!;
     }
 }

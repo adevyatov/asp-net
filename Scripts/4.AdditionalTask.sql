@@ -1,7 +1,7 @@
 -- Доп. задание 1.
 -- 4.1. Добавить  в схему дату получения книги для выявления должников.
 ALTER TABLE library_card
-    ADD COLUMN IF NOT EXISTS date DATE NOT NULL DEFAULT CURRENT_DATE;
+    ADD COLUMN IF NOT EXISTS DATE DATE NOT NULL DEFAULT CURRENT_DATE;
 
 UPDATE library_card
 SET date = CURRENT_DATE - INTERVAL '2' MONTH

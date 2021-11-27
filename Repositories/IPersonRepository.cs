@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using System.Threading.Tasks;
 using WebApi.Models;
 using WebApi.Models.Dto;
 
@@ -8,14 +9,19 @@ namespace WebApi.Repositories
     {
         public Person? GetById(int id);
 
-        public IEnumerable<Person> GetAll();
+        public Task<List<Person>> GetAll();
 
-        public IEnumerable<Person> GetByQuery(string query);
+        public Task<List<Person>> GetByQuery(string query);
 
-        public IEnumerable<Person> GetWriters();
+        public Task<List<Person>> GetByFullname(string fullName);
 
-        public Person Add(Person person);
+        public void Create(Person person);
 
-        public void Remove(Person person);
+        public void Update(Person person);
+        public void Delete(Person person);
+
+        public bool Exist(int id);
+
+        public Task<Person> GetPersonWithLibraryCardsAndBooks(int personId);
     }
 }

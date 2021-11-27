@@ -3,7 +3,7 @@ using System.Collections.Generic;
 namespace WebApi.Models
 {
     /// <summary>
-    /// #2 - 2.2 - Модель для таблицы genre
+    /// #2. 2.2 - Модель для таблицы genre
     /// </summary>
     public class Genre
     {

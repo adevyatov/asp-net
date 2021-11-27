@@ -1,5 +1,6 @@
 using System;
-using System.Collections.Generic;
+using System.Text.Json.Serialization;
+using WebApi.Behaviour.Serialization;
 
 namespace WebApi.Models.Dto
 {
@@ -7,8 +8,8 @@ namespace WebApi.Models.Dto
     {
         public int Id { get; set; }
         public BookDto Book { get; set; } = null!;
-        public PersonDto Person { get; set; } = null!;
-        public DateTime Date { get; }
-        public IEnumerable<LibraryCardDto> LibraryCards { get; set; } = new List<LibraryCardDto>();
+
+        [JsonConverter(typeof(DateConverter))]
+        public DateTime Date { get; set; }
     }
 }

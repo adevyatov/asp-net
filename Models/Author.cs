@@ -3,7 +3,7 @@ using System.Collections.Generic;
 namespace WebApi.Models
 {
     /// <summary>
-    /// #2 - 2.2 - Модель для таблицы author
+    /// #2. 2.2 - Модель для таблицы author
     /// </summary>
     public class Author
     {

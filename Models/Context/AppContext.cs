@@ -12,11 +12,11 @@ namespace WebApi.Models.Context
         public virtual DbSet<Book> Books { get; set; } = null!;
         public virtual DbSet<Genre> Genres { get; set; } = null!;
         public virtual DbSet<LibraryCard> LibraryCards { get; set; } = null!;
-        public virtual DbSet<Person> People { get; set; } = null!;
+        public virtual DbSet<Person> Persons { get; set; } = null!;
 
         /// <summary>
-        ///     #2 - 2.1 - Подключить при помощи ef базу данных к проекту
-        ///     #2 - 2.3 - Реализовать все связи между таблицами
+        ///     #2. 2.1 - Подключить при помощи ef базу данных к проекту
+        ///     #2. 2.3 - Реализовать все связи между таблицами
         /// </summary>
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {

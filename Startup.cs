@@ -46,6 +46,7 @@ namespace WebApi
             services.AddTransient<IPersonRepository, PersonRepository>();
             services.AddTransient<IBookRepository, BookRepository>();
             services.AddTransient<ILibraryCardRepository, LibraryCardRepository>();
+            services.AddTransient<IGenreRepository, GenreRepository>();
             services.AddTransient<IPersonService, PersonService>();
             services.AddTransient<IBookService, BookService>();
             services.AddTransient<ILibraryCardService, LibraryCardService>();

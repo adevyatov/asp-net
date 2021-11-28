@@ -1,3 +1,4 @@
+using System.Threading.Tasks;
 using AutoMapper;
 using WebApi.Models;
 using WebApi.Models.Dto;
@@ -11,6 +12,9 @@ namespace WebApi.Behaviour.MappingProfiles
         {
             CreateMap<Genre, GenreDto>();
             CreateMap<Book, BookDto>();
+            CreateMap<CreateBookDto, Book>();
+            CreateMap<CreateGenreDto, Genre>();
+            CreateMap<CreateAuthorDto, Author>();
 
             CreateMap<Person, PersonDto>();
             CreateMap<CreatePersonDto, Person>();

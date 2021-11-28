@@ -1,18 +1,23 @@
 using System.Collections.Generic;
-using WebApi.Arguments;
+using System.Threading.Tasks;
+using WebApi.Models;
 using WebApi.Models.Dto;
-using WebApi.ViewModels;
+using WebApi.Models.Dto.Request;
 
 namespace WebApi.Services
 {
     public interface IBookService
     {
-        public BookDto GetBook(int bookId);
-        public IEnumerable<BookDto> GetBooks(BookListSort? sortBy);
-        public IEnumerable<BookDto> GetBooks(int authorId);
-        public BookDto Add(AddBookViewModel model);
-        public bool Delete(int id);
+        public Task<bool> Exist(int id);
+        public Task<BookDto> GetBook(int bookId);
+        public Task<IEnumerable<BookDto>> GetBooks(OrderDto? orderBy);
+        public Task<IEnumerable<BookDto>> GetBooks(int authorId);
+        public Task<BookDto> Add(CreateBookDto book);
+        public Task<bool> Delete(int id);
+        public Task<bool> DeleteByAuthorId(int authorId);
+        public Task<BookDto> UpdateGenres(UpdateBookGenreDto dto);
 
-        public bool DeleteByAuthorId(int authorId);
+        public Task<List<BookDto>> GetBooksByAuthorName(AuthorNameDto dto);
+        Task<List<BookDto>> GetBooksByGenreId(int genreId);
     }
 }

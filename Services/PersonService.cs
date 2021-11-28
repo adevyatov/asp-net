@@ -1,11 +1,8 @@
 using System;
 using System.Collections.Generic;
 using System.Data;
-using System.Linq;
 using System.Threading.Tasks;
 using AutoMapper;
-using Microsoft.AspNetCore.Mvc;
-using WebApi.Exceptions;
 using WebApi.Models;
 using WebApi.Models.Dto;
 using WebApi.Models.Dto.Request;
@@ -75,7 +72,7 @@ namespace WebApi.Services
         public async Task<PersonDto> TakeBook(TakeBookDto dto)
         {
             var person = GetExistedPerson(dto.PersonId);
-            var book = GetExistedBook(dto.BookId);
+            var book = await GetExistedBook(dto.BookId);
             var libraryCard = new LibraryCard()
             {
                 Book = book,
@@ -141,10 +138,10 @@ namespace WebApi.Services
             }
         }
 
-        private Book GetExistedBook(int id)
+        private Task<Book> GetExistedBook(int id)
         {
-            return _bookRepository.GetById(id)
-                   ?? throw new ConstraintException("Book with given id does not eixsts");
+            return (_bookRepository.GetById(id)
+                    ?? throw new ConstraintException("Book with given id does not eixsts"))!;
         }
 
         public bool Exist(int id)

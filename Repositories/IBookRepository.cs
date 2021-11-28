@@ -8,12 +8,20 @@ namespace WebApi.Repositories
     {
         public Task<IEnumerable<Book>> GetAll();
 
-        public Book? GetById(int id);
+        public Task<Book> GetById(int id);
 
-        public IEnumerable<Book> GetByAuthorId(int authorId);
+        public Task<Book> GetByIdWithGenres(int id);
 
-        public Book Add(Book book);
+        public Task<List<Book>> GetByAuthorId(int authorId);
 
-        public void Remove(Book book);
+        public Task<Book> Create(Book book);
+
+        public Task<Book> UpdateGenres(Book book, List<Genre> genres);
+
+        public void Delete(Book book);
+        public Task<bool> Exist(int id);
+
+        public Task<List<Book>> GetByAuthorName(string? firstName, string? lastName, string? middleName);
+        public Task<List<Book>> GetByGenreId(int genreId);
     }
 }

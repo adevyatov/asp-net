@@ -45,14 +45,9 @@ namespace WebApi.Repositories
                 .Where(lc => lc.PersonId == id).ToListAsync();
         }
 
-        public Task<List<LibraryCard>> GetByPersonIdWithBooksGenresAndAuthors(int id)
+        public Task<bool> HasAnyByBookId(int bookId)
         {
-            return _context.LibraryCards
-                .Include(lc => lc.Book)
-                .ThenInclude(b => b.Author)
-                .Include(lc => lc.Book)
-                .ThenInclude(b => b.Genres)
-                .Where(lc => lc.PersonId == id).ToListAsync();
+            return _context.LibraryCards.AnyAsync(lc =>lc.BookId == bookId);
         }
     }
 }

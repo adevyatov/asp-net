@@ -5,24 +5,24 @@ namespace WebApi.Services
 {
     public class LibraryCardService : ILibraryCardService
     {
-        private readonly IHumanService _humanService;
+        private readonly IPersonService _personService;
         private readonly IBookService _bookService;
         private readonly ILibraryCardRepository _repo;
 
-        public LibraryCardService(IHumanService humanService, IBookService bookService, ILibraryCardRepository repo)
+        public LibraryCardService(IPersonService personService, IBookService bookService, ILibraryCardRepository repo)
         {
-            _humanService = humanService;
+            _personService = personService;
             _bookService = bookService;
             _repo = repo;
         }
 
         public LibraryCard TakeBook(int humanId, int bookId)
         {
-            var human = _humanService.GetHuman(humanId);
+            var human = _personService.GetPerson(humanId);
             var book = _bookService.GetBook(bookId);
-            var card = new LibraryCard(human, book);
+            var card = new LibraryCard();
 
-            _repo.Add(card);
+            _repo.Create(card);
 
             return card;
         }

@@ -13,6 +13,7 @@ namespace WebApi.Repositories
         public Task<LibraryCard> GetByPersonAndLibraryCardId(int personId, int bookId);
 
         public Task<List<LibraryCard>> GetLibraryCardsByPersonId(int id);
-        public Task<List<LibraryCard>> GetByPersonIdWithBooksGenresAndAuthors(int id);
+
+        public Task<bool> HasAnyByBookId(int bookId);
     }
 }

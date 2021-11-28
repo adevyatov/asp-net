@@ -1,11 +1,8 @@
-using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore.Internal;
 using WebApi.Models;
-using WebApi.Models.Context;
 using AppContext = WebApi.Models.Context.AppContext;
 
 namespace WebApi.Repositories
@@ -19,15 +16,6 @@ namespace WebApi.Repositories
             _context = context;
         }
 
-        /// <summary>
-        ///     1.2.2.3 - Статичный список людей
-        /// </summary>
-        private static List<Book> Books { get; } = new()
-        {
-        };
-
-        private static int LastId { get; set; } = Books.Count;
-
         public async Task<IEnumerable<Book>> GetAll()
         {
             return await _context.Books
@@ -36,28 +24,80 @@ namespace WebApi.Repositories
                 .ToListAsync();
         }
 
-        public Book? GetById(int id)
+        public Task<Book> GetById(int id)
         {
-            return Books.FirstOrDefault(h => h.Id == id);
+            return _context.Books.FirstOrDefaultAsync(h => h.Id == id);
         }
 
-        public IEnumerable<Book> GetByAuthorId(int authorId)
+        public Task<Book> GetByIdWithGenres(int id)
         {
-            throw new Exception("Not implemented");
-            // return Books.Where(b => b.AuthorId == authorId).ToArray();
+            return _context.Books.Include(b => b.Genres).FirstOrDefaultAsync(b => b.Id == id);
         }
 
-        public Book Add(Book book)
+        public Task<List<Book>> GetByAuthorId(int authorId)
         {
-            book.Id = ++LastId;
-            Books.Add(book);
-
-            return book;
+            return _context.Books.Where(b => b.AuthorId == authorId).ToListAsync();
         }
 
-        public void Remove(Book book)
+        public Task<Book> Create(Book book)
         {
-            Books.Remove(book);
+            _context.Books.Add(book);
+            _context.SaveChanges();
+
+            return Task.FromResult(book);
+        }
+
+        public Task<Book> UpdateGenres(Book book, List<Genre> genres)
+        {
+            book.Genres = genres;
+            _context.SaveChanges();
+
+            return Task.FromResult(book);
+        }
+
+        public void Delete(Book book)
+        {
+            _context.Books.Remove(book);
+            _context.SaveChangesAsync();
+        }
+
+        public Task<bool> Exist(int id)
+        {
+            return _context.Books.AnyAsync(e => e.Id == id);
+        }
+
+        public Task<List<Book>> GetByAuthorName(string? firstName, string? lastName, string? middleName)
+        {
+            var books = _context.Books
+                .Include(b=>b.Author)
+                .Include(b=>b.Genres)
+                .AsQueryable();
+
+            if (firstName != null)
+            {
+                books = books.Where(b => b.Author.FirstName == firstName);
+            }
+
+            if (lastName != null)
+            {
+                books = books.Where(b => b.Author.LastName == lastName);
+            }
+
+            if (middleName != null)
+            {
+                books = books.Where(b => b.Author.MiddleName == middleName);
+            }
+
+            return books.ToListAsync();
+        }
+
+        public Task<List<Book>> GetByGenreId(int genreId)
+        {
+            return _context.Books
+                .Include(b => b.Genres)
+                .Include(b => b.Author)
+                .Where(b => b.Genres.Any(g => g.Id == genreId))
+                .ToListAsync();
         }
     }
 }

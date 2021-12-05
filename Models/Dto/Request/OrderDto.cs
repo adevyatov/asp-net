@@ -1,11 +1,9 @@
-using System;
-
-namespace WebApi.Arguments
+namespace WebApi.Models.Dto.Request
 {
     /// <summary>
     ///     2.2.2 - Класс DTO для передачи аргументов из конструктора в сервис
     /// </summary>
-    public class BookListSort
+    public class OrderDto
     {
         public string? OrderBy { get; set; }
 

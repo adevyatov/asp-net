@@ -1,7 +1,10 @@
+using System.Reflection;
+using System.Text.Json.Serialization;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Diagnostics;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
@@ -9,6 +12,7 @@ using Microsoft.Extensions.Logging;
 using Microsoft.OpenApi.Models;
 using WebApi.Exceptions;
 using WebApi.Middleware;
+using WebApi.Models.Context;
 using WebApi.Repositories;
 using WebApi.Services;
 
@@ -28,12 +32,25 @@ namespace WebApi
         {
             services.AddControllers();
             services.AddSwaggerGen(c => { c.SwaggerDoc("v1", new OpenApiInfo {Title = "WebApi", Version = "v1"}); });
-            services.AddTransient<IHumanRepository, HumanRepository>();
+            services.AddMvc()
+                .AddJsonOptions(options =>
+                {
+                    options.JsonSerializerOptions.DefaultIgnoreCondition = JsonIgnoreCondition.WhenWritingNull;
+                });
+
+            // #2. 2.4 - Получать строку подключения к базе данных из файла конфигурации
+            services.AddDbContext<AppContext>(options =>
+                options.UseNpgsql(Configuration["Db:AppContext:ConnectionString"])
+            );
+
+            services.AddTransient<IPersonRepository, PersonRepository>();
             services.AddTransient<IBookRepository, BookRepository>();
             services.AddTransient<ILibraryCardRepository, LibraryCardRepository>();
-            services.AddTransient<IHumanService, HumanService>();
+            services.AddTransient<IGenreRepository, GenreRepository>();
+            services.AddTransient<IPersonService, PersonService>();
             services.AddTransient<IBookService, BookService>();
             services.AddTransient<ILibraryCardService, LibraryCardService>();
+            services.AddAutoMapper(Assembly.GetExecutingAssembly());
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -67,7 +84,7 @@ namespace WebApi
             app.UseAuthorization();
 
             app.UseMiddleware<RequestExecutionMiddleware>();
-            app.UseMiddleware<BasicAuthMiddleware>();
+            // app.UseMiddleware<BasicAuthMiddleware>();
 
             app.UseEndpoints(endpoints => { endpoints.MapControllers(); });
         }

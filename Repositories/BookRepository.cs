@@ -1,74 +1,103 @@
 using System.Collections.Generic;
 using System.Linq;
-using WebApi.Models.Dto;
+using System.Threading.Tasks;
+using Microsoft.EntityFrameworkCore;
+using WebApi.Models;
+using AppContext = WebApi.Models.Context.AppContext;
 
 namespace WebApi.Repositories
 {
     public class BookRepository : IBookRepository
     {
-        /// <summary>
-        ///     1.2.2.3 - Статичный список людей
-        /// </summary>
-        private static List<BookDto> Books { get; } = new()
-        {
-            new BookDto
-            {
-                Id = 1,
-                Title = "Крыса из нержавеющей стали",
-                AuthorId = 1,
-                Genre = "Фантастика",
-            },
-            new BookDto
-            {
-                Id = 2,
-                Title = "Неукротимая планета",
-                AuthorId = 1,
-                Genre = "Фантастика",
-            },
-            new BookDto
-            {
-                Id = 3,
-                Title = "Черновик",
-                AuthorId = 3,
-                Genre = "Фантастика",
-            },
-            new BookDto
-            {
-                Id = 4,
-                Title = "Алмазный меч, Деревянный меч",
-                AuthorId = 2,
-                Genre = "Фэнтези",
-            },
-        };
+        private readonly AppContext _context;
 
-        private static int LastId { get; set; } = Books.Count;
-
-        public IEnumerable<BookDto> GetAll()
+        public BookRepository(AppContext context)
         {
-            return Books.ToArray();
+            _context = context;
         }
 
-        public BookDto? GetById(int id)
+        public async Task<IEnumerable<Book>> GetAll()
         {
-            return Books.FirstOrDefault(h => h.Id == id);
+            return await _context.Books
+                .Include(b => b.Author)
+                .Include(b => b.Genres)
+                .ToListAsync();
         }
 
-        public IEnumerable<BookDto> GetByAuthorId(int authorId)
+        public Task<Book> GetById(int id)
         {
-            return Books.Where(b => b.AuthorId == authorId).ToArray();
+            return _context.Books.FirstOrDefaultAsync(h => h.Id == id);
         }
 
-        public BookDto Add(BookDto book)
+        public Task<Book> GetByIdWithGenres(int id)
         {
-            book.Id = ++LastId;
-            Books.Add(book);
-
-            return book;
+            return _context.Books.Include(b => b.Genres).FirstOrDefaultAsync(b => b.Id == id);
         }
 
-        public void Remove(BookDto book)
+        public Task<List<Book>> GetByAuthorId(int authorId)
         {
-            Books.Remove(book);
+            return _context.Books.Where(b => b.AuthorId == authorId).ToListAsync();
+        }
+
+        public Task<Book> Create(Book book)
+        {
+            _context.Books.Add(book);
+            _context.SaveChanges();
+
+            return Task.FromResult(book);
+        }
+
+        public Task<Book> UpdateGenres(Book book, List<Genre> genres)
+        {
+            book.Genres = genres;
+            _context.SaveChanges();
+
+            return Task.FromResult(book);
+        }
+
+        public void Delete(Book book)
+        {
+            _context.Books.Remove(book);
+            _context.SaveChangesAsync();
+        }
+
+        public Task<bool> Exist(int id)
+        {
+            return _context.Books.AnyAsync(e => e.Id == id);
+        }
+
+        public Task<List<Book>> GetByAuthorName(string? firstName, string? lastName, string? middleName)
+        {
+            var books = _context.Books
+                .Include(b=>b.Author)
+                .Include(b=>b.Genres)
+                .AsQueryable();
+
+            if (firstName != null)
+            {
+                books = books.Where(b => b.Author.FirstName == firstName);
+            }
+
+            if (lastName != null)
+            {
+                books = books.Where(b => b.Author.LastName == lastName);
+            }
+
+            if (middleName != null)
+            {
+                books = books.Where(b => b.Author.MiddleName == middleName);
+            }
+
+            return books.ToListAsync();
+        }
+
+        public Task<List<Book>> GetByGenreId(int genreId)
+        {
+            return _context.Books
+                .Include(b => b.Genres)
+                .Include(b => b.Author)
+                .Where(b => b.Genres.Any(g => g.Id == genreId))
+                .ToListAsync();
         }
     }
 }

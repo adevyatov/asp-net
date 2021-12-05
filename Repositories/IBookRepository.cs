@@ -1,18 +1,27 @@
 using System.Collections.Generic;
-using WebApi.Models.Dto;
+using System.Threading.Tasks;
+using WebApi.Models;
 
 namespace WebApi.Repositories
 {
     public interface IBookRepository
     {
-        public IEnumerable<BookDto> GetAll();
+        public Task<IEnumerable<Book>> GetAll();
 
-        public BookDto? GetById(int id);
+        public Task<Book> GetById(int id);
 
-        public IEnumerable<BookDto> GetByAuthorId(int authorId);
+        public Task<Book> GetByIdWithGenres(int id);
 
-        public BookDto Add(BookDto book);
+        public Task<List<Book>> GetByAuthorId(int authorId);
 
-        public void Remove(BookDto book);
+        public Task<Book> Create(Book book);
+
+        public Task<Book> UpdateGenres(Book book, List<Genre> genres);
+
+        public void Delete(Book book);
+        public Task<bool> Exist(int id);
+
+        public Task<List<Book>> GetByAuthorName(string? firstName, string? lastName, string? middleName);
+        public Task<List<Book>> GetByGenreId(int genreId);
     }
 }
